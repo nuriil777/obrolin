@@ -28,7 +28,7 @@
 }
 html,body{height:100%;overflow:hidden;}
 body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(--text1);
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:stretch;justify-content:stretch;
   padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes popIn{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
@@ -76,7 +76,7 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
   padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:14px;display:none;}
 
 /* ── APP ── */
-#app{display:none;width:100%;height:100%;flex-direction:row;}
+#app{display:none;width:100%;height:100%;flex-direction:row;overflow:hidden;}
 
 /* ── SIDEBAR ── */
 .sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);
@@ -423,21 +423,53 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
   :root{--sidebar-w:100%;}
   .acard{width:calc(100% - 28px);padding:26px 18px;border-radius:16px;}
   .sbprofile-btn.hide-mobile,.tsep{display:none;}
-  #app{flex-direction:column;}
-  .sidebar{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;}
+
+  /* App layout: full screen columns */
+  #app{position:fixed;inset:0;flex-direction:row;}
+
+  /* Sidebar full screen */
+  .sidebar{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;z-index:10;}
   .sidebar.out{transform:translateX(-100%);pointer-events:none;}
-  .chatarea{position:absolute;top:0;left:0;right:0;bottom:0;transform:translateX(100%);}
+
+  /* Chat area full screen */
+  .chatarea{position:absolute;top:0;left:0;right:0;
+    bottom:calc(58px + env(safe-area-inset-bottom));
+    transform:translateX(100%);width:100%;}
   .chatarea.in{transform:translateX(0);}
+
+  /* Chat view fills chatarea */
+  #chatView{height:100%;}
+
   .chback{display:flex;}
   .mnav{display:block;}
-  .listwrap{padding-bottom:68px;}
-  .msgwrap{padding:10px 12px;}
-  .inparea{padding:8px 10px;padding-bottom:calc(68px + env(safe-area-inset-bottom));}
-  .mcont{max-width:82%;}
+  .listwrap{padding-bottom:calc(68px + env(safe-area-inset-bottom));}
+
+  /* Messages: normal padding, no extra bottom */
+  .msgwrap{padding:10px 12px;padding-bottom:8px;}
+
+  /* Input: sits just above bottom nav */
+  .inparea{
+    padding:8px 10px;
+    padding-bottom:env(safe-area-inset-bottom);
+    position:relative;z-index:5;
+  }
+
+  /* Bubbles: max 78% width */
+  .mcont{max-width:78%;}
+
+  /* Reactions: wrap properly */
+  .reactions{max-width:100%;flex-wrap:wrap;}
+
+  /* Action bar: wrap on small screens */
+  .msg-actions{flex-wrap:wrap;gap:3px;}
+  .mact-emoji-strip{flex-shrink:0;}
+
   .modal{width:calc(100% - 20px);padding:20px 16px 16px;}
   .uslist{max-height:160px;}
-  .nochat{padding-bottom:60px;}
+  .nochat{padding-bottom:calc(60px + env(safe-area-inset-bottom));}
   .ch-members{display:none;}
+  .chacts .chact-btn:not(#notifBtn){display:none;}
+  .chacts #notifBtn{display:flex!important;}
 }
 @media(max-width:400px){
   .acard{padding:22px 14px;}
@@ -1340,6 +1372,25 @@ window.searchInChat=()=>{
 
 <script>
 if("serviceWorker"in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});}
+
+// Hide bottom nav when virtual keyboard opens (Android)
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize",()=>{
+    const mnav=document.querySelector(".mnav");
+    const chatarea=document.querySelector(".chatarea");
+    if(!mnav||!chatarea)return;
+    const vvh=window.visualViewport.height;
+    const wh=window.innerHeight;
+    const keyboardOpen=wh-vvh>150;
+    if(keyboardOpen){
+      mnav.style.display="none";
+      chatarea.style.bottom="0";
+    }else{
+      mnav.style.display="block";
+      chatarea.style.bottom="calc(58px + env(safe-area-inset-bottom))";
+    }
+  });
+}
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;const btn=document.getElementById("installBtn");if(btn)btn.style.display="flex";});
 window.addEventListener("appinstalled",()=>{deferredPrompt=null;const btn=document.getElementById("installBtn");if(btn)btn.style.display="none";});
