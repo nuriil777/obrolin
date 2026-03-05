@@ -196,7 +196,7 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
 .ch-mem-av:first-child{margin-left:0;}
 
 /* MESSAGES */
-.msgwrap{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:1px;
+.msgwrap{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px;display:flex;flex-direction:column;gap:1px;
   background:var(--bg1);}
 .msgwrap::-webkit-scrollbar{width:4px;}
 .msgwrap::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:4px;}
@@ -206,13 +206,15 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
   background:var(--bg3);padding:3px 10px;border-radius:20px;border:1px solid var(--border);}
 
 /* MSG ROW */
-.mrow{display:flex;gap:10px;padding:3px 0;animation:fu .15s ease;position:relative;}
+.mrow{display:flex;gap:8px;padding:3px 0;animation:fu .15s ease;position:relative;
+  max-width:100%;box-sizing:border-box;}
 .mrow.me{flex-direction:row-reverse;}
 .mrow:hover .msg-actions{opacity:1;}
 .mav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;flex-shrink:0;align-self:flex-end;margin-bottom:2px;cursor:pointer;}
+  font-size:11px;font-weight:800;flex-shrink:0;align-self:flex-end;margin-bottom:2px;cursor:pointer;
+  overflow:hidden;}
 .mav.hidden-av{visibility:hidden;}
-.mcont{max-width:65%;display:flex;flex-direction:column;gap:3px;}
+.mcont{max-width:62%;display:flex;flex-direction:column;gap:3px;min-width:0;}
 .mrow.me .mcont{align-items:flex-end;}
 .msender{font-size:11px;font-weight:700;margin-bottom:1px;color:var(--accent2);padding-left:2px;}
 
@@ -259,7 +261,8 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
 
 /* BUBBLE */
 .bub{padding:9px 13px;border-radius:16px;font-size:13.5px;line-height:1.6;
-  word-break:break-word;position:relative;max-width:100%;}
+  word-break:break-word;word-wrap:break-word;position:relative;max-width:100%;
+  overflow-wrap:break-word;}
 .bub.o{background:var(--bubble-in);border:1px solid var(--border);color:var(--text1);
   border-bottom-left-radius:4px;}
 .bub.s{background:var(--bubble-out);border:1px solid rgba(43,108,176,.4);
@@ -281,7 +284,7 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
 .bub.o .medit-label,.bub.dmo .medit-label{color:var(--text3);}
 
 /* REACTIONS */
-.reactions{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;}
+.reactions{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;max-width:100%;overflow:hidden;}
 .rxn{display:flex;align-items:center;gap:3px;background:var(--bg3);
   border:1px solid var(--border);border-radius:20px;padding:3px 8px;
   font-size:13px;cursor:pointer;transition:all .12s;user-select:none;}
@@ -434,7 +437,9 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
   /* Chat area full screen */
   .chatarea{position:absolute;top:0;left:0;right:0;
     bottom:calc(58px + env(safe-area-inset-bottom));
-    transform:translateX(100%);width:100%;}
+    transform:translateX(100%);width:100%;
+    padding-left:env(safe-area-inset-left);
+    padding-right:env(safe-area-inset-right);}
   .chatarea.in{transform:translateX(0);}
 
   /* Chat view fills chatarea */
@@ -451,11 +456,15 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg0);color:var(
   .inparea{
     padding:8px 10px;
     padding-bottom:env(safe-area-inset-bottom);
+    padding-left:max(10px, env(safe-area-inset-left));
+    padding-right:max(10px, env(safe-area-inset-right));
     position:relative;z-index:5;
   }
 
   /* Bubbles: max 78% width */
-  .mcont{max-width:78%;}
+  .mcont{max-width:72%;}
+  .mrow{padding:2px 0;}
+  .msgwrap{padding:10px 10px;}
 
   /* Reactions: wrap properly */
   .reactions{max-width:100%;flex-wrap:wrap;}
