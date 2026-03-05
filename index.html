@@ -914,7 +914,7 @@ window.addEventListener("appinstalled",()=>{deferredPrompt=null;const btn=docume
 window.installApp=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;};
 const isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
 const isStandalone=window.navigator.standalone===true;
-const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const ua=navigator.userAgent.toLowerCase();const isSafari=ua.includes('safari')&&!ua.includes('chrome')&&!ua.includes('android')&&!ua.includes('crios')&&!ua.includes('fxios');
 function showIosGuide(){document.getElementById("iosGuide").classList.add("show");document.getElementById("iosDimmer").classList.add("show");}
 window.closeIosGuide=()=>{document.getElementById("iosGuide").classList.remove("show");document.getElementById("iosDimmer").classList.remove("show");localStorage.setItem("iosShown",Date.now());};
 if(isIos&&isSafari&&!isStandalone){const ls=localStorage.getItem("iosShown");if(!ls||(Date.now()-+ls)>259200000)setTimeout(showIosGuide,3000);const btn=document.getElementById("installBtn");if(btn){btn.style.display="flex";btn.onclick=showIosGuide;}}
