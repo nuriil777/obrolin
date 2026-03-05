@@ -1,0 +1,37 @@
+{
+  "name": "NgobrolinAja",
+  "short_name": "NgobrolinAja",
+  "description": "Aplikasi chat real-time untuk grup dan pribadi",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080b10",
+  "theme_color": "#f97316",
+  "lang": "id",
+  "categories": ["social", "communication"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%23f97316'/><text y='380' x='60' font-size='380'>💬</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Grup",
+      "short_name": "Grup",
+      "description": "Buka obrolan grup",
+      "url": "./index.html#rooms",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>", "sizes": "96x96" }]
+    },
+    {
+      "name": "Chat Pribadi",
+      "short_name": "Pribadi",
+      "description": "Buka chat pribadi",
+      "url": "./index.html#dms",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>", "sizes": "96x96" }]
+    }
+  ]
+}
